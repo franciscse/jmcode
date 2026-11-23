@@ -69,6 +69,17 @@
     mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
   }
 
+  // Close the compact mobile menu by tapping outside it or pressing Escape
+  const navmenuEl = document.querySelector('#navmenu');
+  if (navmenuEl) {
+    navmenuEl.addEventListener('click', (e) => {
+      if (e.target === navmenuEl && document.querySelector('.mobile-nav-active')) mobileNavToogle();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.querySelector('.mobile-nav-active')) mobileNavToogle();
+  });
+
   /**
    * Hide mobile nav on same-page/hash links
    */
