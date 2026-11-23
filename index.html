@@ -15,7 +15,17 @@
     <meta name="google-site-verification" content="your-google-site-verification-code">
     <meta name="msvalidate.01" content="your-msvalidate-code">
     <meta name="yandex-verification" content="your-yandex-verification-code">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#070912">
+    <meta name="color-scheme" content="dark light">
+    <!-- Apply saved / system theme before first paint to avoid a flash -->
+    <script>
+        (function() {
+            var t;
+            try { t = localStorage.getItem('jm-theme'); } catch (e) {}
+            if (t !== 'light' && t !== 'dark') t = 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <meta name="application-name" content="JM CODE">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -26,7 +36,6 @@
     <meta name="msapplication-config" content="favicon/browserconfig.xml">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name=" theme-color " content="#ffffff ">
     <meta name="author " content="JM CODE ">
     <!-- Favicons -->
     <link rel="apple-touch-icon " sizes="180x180 " href="favicon/apple-touch-icon.png ">
@@ -50,6 +59,8 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
+    <!-- Theme layer: glass surfaces + dark/light palettes -->
+    <link href="assets/css/theme.css" rel="stylesheet">
 
 </head>
 
@@ -74,6 +85,11 @@
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
+
+            <button type="button" class="theme-toggle" aria-label="Switch to light theme" title="Switch theme">
+                <i class="bi bi-sun" aria-hidden="true"></i>
+                <i class="bi bi-moon-stars" aria-hidden="true"></i>
+            </button>
 
         </div>
     </header>

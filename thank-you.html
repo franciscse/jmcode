@@ -4,38 +4,93 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Thank You | JM CODE</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="dark light">
+  <script>
+    (function() {
+      var t;
+      try { t = localStorage.getItem('jm-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root, :root[data-theme="dark"] {
+      --bg: #070912;
+      --text: #c3cae0;
+      --heading: #f3f5ff;
+      --glass: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+      --btn: linear-gradient(135deg, #7c3aed 0%, #c026d3 55%, #db2777 100%);
+      --grad-text: linear-gradient(90deg, #a78bfa, #22d3ee, #f472b6);
+      --b1: rgba(124, 58, 237, 0.4);
+      --b2: rgba(34, 211, 238, 0.24);
+      --b3: rgba(236, 72, 153, 0.26);
     }
+    :root[data-theme="light"] {
+      --bg: #faf6f1;
+      --text: #4a3f38;
+      --heading: #2b211c;
+      --glass: rgba(255, 255, 255, 0.55);
+      --border: rgba(255, 255, 255, 0.8);
+      --shadow: 0 10px 36px rgba(120, 84, 60, 0.14);
+      --btn: linear-gradient(135deg, #b4533f 0%, #a24f6a 100%);
+      --grad-text: linear-gradient(90deg, #b4533f, #a24f6a, #7458b8);
+      --b1: rgba(255, 196, 168, 0.8);
+      --b2: rgba(214, 200, 250, 0.8);
+      --b3: rgba(196, 236, 216, 0.75);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--bg); }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #f4f9ff;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      color: #333;
+      min-height: 100vh;
+      padding: 16px;
+      color: var(--text);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(45vw 45vw at 15% 20%, var(--b1), transparent 60%),
+        radial-gradient(40vw 40vw at 85% 30%, var(--b2), transparent 60%),
+        radial-gradient(45vw 45vw at 60% 90%, var(--b3), transparent 60%);
+      filter: blur(20px);
     }
 
     .thank-you-container {
-      background: #ffffff;
-      padding: 3rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+      padding: 3rem 2rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
       text-align: center;
       max-width: 450px;
       width: 100%;
     }
 
     .thank-you-container h1 {
-      font-size: 2rem;
-      color: #007bff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
       margin-bottom: 1rem;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .thank-you-container p {
@@ -44,17 +99,19 @@
     }
 
     .thank-you-container a {
+      display: inline-block;
       text-decoration: none;
-      background-color: #007bff;
+      background: var(--btn);
       color: #fff;
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
+      padding: 0.8rem 1.6rem;
+      border-radius: 50px;
       font-weight: 600;
-      transition: background 0.3s ease;
+      transition: transform 0.25s ease, filter 0.25s ease;
     }
 
     .thank-you-container a:hover {
-      background-color: #0056b3;
+      transform: translateY(-2px);
+      filter: brightness(1.1);
     }
   </style>
 </head>

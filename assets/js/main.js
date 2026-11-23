@@ -10,6 +10,39 @@
   "use strict";
 
   /**
+   * Theme switcher: dark (neon/gradient) <-> light (pastel/warm)
+   * The initial theme is set by an inline script in <head>.
+   */
+  const THEME_KEY = 'jm-theme';
+  const root = document.documentElement;
+  const themeToggle = document.querySelector('.theme-toggle');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const THEME_COLORS = { dark: '#070912', light: '#faf6f1' };
+
+  function applyTheme(theme, animate) {
+    if (animate) {
+      root.classList.add('theme-switching');
+      window.setTimeout(() => root.classList.remove('theme-switching'), 500);
+    }
+    root.setAttribute('data-theme', theme);
+    if (themeMeta) themeMeta.setAttribute('content', THEME_COLORS[theme]);
+    if (themeToggle) {
+      const next = theme === 'dark' ? 'light' : 'dark';
+      themeToggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+    }
+  }
+
+  applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark', false);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next, true);
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    });
+  }
+
+  /**
    * Apply .scrolled class to the body as the page is scrolled down
    */
   function toggleScrolled() {

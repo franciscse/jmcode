@@ -1,0 +1,566 @@
+/*--------------------------------------------------------------
+# JM CODE Theme Layer — glass surfaces + dark/light palettes
+# Loaded after main.css. All colours are tokens on [data-theme].
+#   dark  : neon / gradient  (AI, fintech, SaaS)
+#   light : pastel / warm neutral (wellness, lifestyle, consumer)
+--------------------------------------------------------------*/
+
+/* ---------- Dark: neon / gradient (default) ---------- */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background-color: #070912;
+  --default-color: #c3cae0;
+  --heading-color: #f3f5ff;
+  --accent-color: #a78bfa;          /* text-safe accent on dark */
+  --accent-2: #22d3ee;              /* neon cyan */
+  --accent-3: #ec4899;              /* neon pink */
+  --surface-color: #11142a;
+  --contrast-color: #ffffff;
+
+  --nav-color: #d6dbef;
+  --nav-hover-color: #c4b5fd;
+  --nav-mobile-background-color: rgba(17, 20, 42, 0.92);
+  --nav-dropdown-background-color: rgba(17, 20, 42, 0.92);
+  --nav-dropdown-color: #d6dbef;
+  --nav-dropdown-hover-color: #c4b5fd;
+
+  --grad-btn: linear-gradient(135deg, #7c3aed 0%, #c026d3 55%, #db2777 100%);
+  --grad-text: linear-gradient(90deg, #a78bfa 0%, #22d3ee 50%, #f472b6 100%);
+  --grad-line: linear-gradient(90deg, #8b5cf6, #22d3ee);
+
+  --glass-bg: rgba(255, 255, 255, 0.055);
+  --glass-bg-strong: rgba(22, 25, 50, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glass-glow: 0 0 0 1px rgba(167, 139, 250, 0.35), 0 12px 48px rgba(124, 58, 237, 0.35);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --band-bg: rgba(255, 255, 255, 0.015);
+
+  --blob-1: rgba(124, 58, 237, 0.38);
+  --blob-2: rgba(34, 211, 238, 0.22);
+  --blob-3: rgba(236, 72, 153, 0.24);
+  --blob-4: rgba(59, 130, 246, 0.18);
+  --grid-line: rgba(255, 255, 255, 0.035);
+
+  --tint-orange: #fbbf24;
+  --tint-blue: #38bdf8;
+  --tint-green: #34d399;
+  --tint-red: #fb7185;
+}
+
+/* ---------- Light: pastel / warm neutral ---------- */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --background-color: #faf6f1;
+  --default-color: #4a3f38;
+  --heading-color: #2b211c;
+  --accent-color: #b4533f;          /* terracotta, AA on cream */
+  --accent-2: #8a6fc9;              /* lavender */
+  --accent-3: #e9967a;              /* peach */
+  --surface-color: #fffdfa;
+  --contrast-color: #ffffff;
+
+  --nav-color: #3d332d;
+  --nav-hover-color: #b4533f;
+  --nav-mobile-background-color: rgba(255, 252, 248, 0.94);
+  --nav-dropdown-background-color: rgba(255, 252, 248, 0.94);
+  --nav-dropdown-color: #3d332d;
+  --nav-dropdown-hover-color: #b4533f;
+
+  --grad-btn: linear-gradient(135deg, #b4533f 0%, #a24f6a 100%);
+  --grad-text: linear-gradient(90deg, #b4533f 0%, #a24f6a 50%, #7458b8 100%);
+  --grad-line: linear-gradient(90deg, #e9967a, #a98ee0);
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 252, 248, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-highlight: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 10px 36px rgba(120, 84, 60, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --glass-glow: 0 0 0 1px rgba(180, 83, 63, 0.25), 0 14px 40px rgba(180, 83, 63, 0.16);
+  --input-bg: rgba(255, 255, 255, 0.7);
+  --band-bg: rgba(255, 255, 255, 0.25);
+
+  --blob-1: rgba(255, 196, 168, 0.75);  /* peach */
+  --blob-2: rgba(214, 200, 250, 0.75);  /* lavender */
+  --blob-3: rgba(196, 236, 216, 0.7);   /* mint */
+  --blob-4: rgba(255, 236, 186, 0.7);   /* butter */
+  --grid-line: transparent;
+
+  --tint-orange: #d97706;
+  --tint-blue: #0284c7;
+  --tint-green: #059669;
+  --tint-red: #e11d48;
+}
+
+/*--------------------------------------------------------------
+# Backdrop: fixed gradient blobs that the glass blurs over
+--------------------------------------------------------------*/
+html {
+  background-color: var(--background-color);
+}
+
+/* body stays transparent so the html background reaches the canvas
+   and the fixed z-index:-1 backdrop below is not painted over */
+body {
+  background: transparent;
+  position: relative;
+  min-height: 100vh;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  background:
+    radial-gradient(40vw 40vw at 8% 12%, var(--blob-1), transparent 60%),
+    radial-gradient(36vw 36vw at 92% 18%, var(--blob-2), transparent 60%),
+    radial-gradient(42vw 42vw at 80% 88%, var(--blob-3), transparent 60%),
+    radial-gradient(34vw 34vw at 15% 85%, var(--blob-4), transparent 60%);
+  filter: blur(20px);
+  animation: jm-drift 28s ease-in-out infinite alternate;
+}
+
+body::after {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+}
+
+@keyframes jm-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-2%, 2%, 0) scale(1.05); }
+  100% { transform: translate3d(2%, -1%, 0) scale(1); }
+}
+
+/* Sections become transparent so the backdrop shows through */
+section,
+.section,
+.footer,
+.hero,
+.light-background {
+  background: transparent;
+  --background-color: transparent;
+}
+
+.light-background {
+  background: var(--band-bg);
+}
+
+.hero::before {
+  display: none;
+}
+
+.features-cards {
+  --default-color: inherit;
+  --heading-color: inherit;
+}
+
+/*--------------------------------------------------------------
+# Glass surfaces
+--------------------------------------------------------------*/
+.glass,
+.hero .stats-row,
+.hero .customers-badge,
+.about .contact-info,
+.features .nav-tabs,
+.features-cards .feature-box,
+.testimonials .testimonial-item,
+.stats .stats-item,
+.services .service-card,
+.faq .faq-container .faq-item,
+.contact .info-box,
+.contact .contact-form {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+.testimonials .testimonial-item,
+.stats .stats-item {
+  border-radius: 18px;
+}
+
+.services .service-card,
+.features-cards .feature-box,
+.faq .faq-container .faq-item {
+  border-radius: 16px;
+}
+
+.contact .info-box,
+.contact .contact-form,
+.hero .stats-row {
+  border-radius: 24px;
+}
+
+/* Lift + glow on hover for interactive cards */
+.features-cards .feature-box,
+.testimonials .testimonial-item,
+.services .service-card,
+.stats .stats-item {
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.features-cards .feature-box:hover,
+.testimonials .testimonial-item:hover,
+.services .service-card:hover,
+.stats .stats-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--glass-glow);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 55%);
+}
+
+/* Header: glass on a pseudo-element so the fixed mobile menu
+   is not trapped by backdrop-filter's containing block */
+.header .header-container,
+.scrolled .header .header-container {
+  background: transparent;
+  box-shadow: none;
+  isolation: isolate;
+}
+
+.header .header-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  backdrop-filter: blur(20px) saturate(170%);
+}
+
+.header .logo h1 {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Mobile menu panel */
+@media (max-width: 1199px) {
+  .navmenu ul {
+    background: var(--nav-mobile-background-color);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .mobile-nav-active .navmenu {
+    background: rgba(5, 6, 15, 0.55);
+  }
+}
+
+/*--------------------------------------------------------------
+# Theme toggle
+--------------------------------------------------------------*/
+.theme-toggle {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--heading-color);
+  font-size: 18px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(-15deg) scale(1.05);
+  box-shadow: var(--glass-glow);
+  color: var(--accent-color);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.theme-toggle i {
+  position: absolute;
+  line-height: 1;
+  transition: transform 0.45s cubic-bezier(.5, 1.6, .4, 1), opacity 0.3s ease;
+}
+
+/* dark theme shows the sun (switch to light) */
+:root[data-theme="dark"] .theme-toggle .bi-sun,
+:root:not([data-theme]) .theme-toggle .bi-sun { transform: none; opacity: 1; }
+:root[data-theme="dark"] .theme-toggle .bi-moon-stars,
+:root:not([data-theme]) .theme-toggle .bi-moon-stars { transform: translateY(150%) rotate(90deg); opacity: 0; }
+
+/* light theme shows the moon (switch to dark) */
+:root[data-theme="light"] .theme-toggle .bi-moon-stars { transform: none; opacity: 1; }
+:root[data-theme="light"] .theme-toggle .bi-sun { transform: translateY(-150%) rotate(-90deg); opacity: 0; }
+
+@media (min-width: 1200px) {
+  .header .navmenu {
+    margin-left: auto;
+  }
+
+  .theme-toggle {
+    margin-left: 18px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .theme-toggle {
+    order: 2;
+    margin-right: 8px;
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+}
+
+/* Smooth colour swap only while switching */
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease, fill 0.45s ease !important;
+}
+
+/*--------------------------------------------------------------
+# Accents: gradient buttons, text and rules
+--------------------------------------------------------------*/
+.hero .hero-content h1 .accent-text,
+.stats .stats-item span,
+.about .image-wrapper .experience-badge h3 {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero .btn-primary,
+.contact .contact-form .btn,
+.scroll-top,
+.features .nav-link.active,
+.hero .customers-badge .avatar.more,
+.hero .stat-item:hover .stat-icon,
+.services .service-card:hover .icon {
+  background: var(--grad-btn);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.hero .btn-primary,
+.contact .contact-form .btn {
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--accent-color), transparent 65%);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.hero .btn-primary:hover,
+.contact .contact-form .btn:hover,
+.scroll-top:hover {
+  background: var(--grad-btn);
+  color: #ffffff;
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px color-mix(in srgb, var(--accent-color), transparent 50%);
+}
+
+.section-title h2:after,
+.features .tab-pane h3:after,
+.stats .stats-item span:after {
+  background: var(--grad-line);
+  height: 3px;
+  border-radius: 3px;
+}
+
+.section-title h2 {
+  letter-spacing: 0.3px;
+}
+
+.hero .company-badge {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.hero .customers-badge .avatar {
+  border-color: var(--glass-highlight);
+}
+
+.hero .stat-item .stat-icon,
+.features-2 .feature-item .feature-icon,
+.services .service-card .icon {
+  background: color-mix(in srgb, var(--accent-color), transparent 86%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 75%);
+}
+
+/* About */
+.about .image-wrapper .small-image {
+  border-color: var(--glass-highlight);
+}
+
+.about .image-wrapper .main-image,
+.about .image-wrapper .small-image {
+  box-shadow: var(--glass-shadow);
+}
+
+.about .image-wrapper .experience-badge {
+  background: var(--glass-bg-strong);
+  color: var(--default-color);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-glow);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.about .image-wrapper .experience-badge h3 span {
+  color: var(--heading-color);
+  -webkit-text-fill-color: var(--heading-color);
+}
+
+/* Feature tinted glass cards */
+.features-cards .feature-box.orange { --tint: var(--tint-orange); }
+.features-cards .feature-box.blue   { --tint: var(--tint-blue); }
+.features-cards .feature-box.green  { --tint: var(--tint-green); }
+.features-cards .feature-box.red    { --tint: var(--tint-red); }
+
+.features-cards .feature-box.orange,
+.features-cards .feature-box.blue,
+.features-cards .feature-box.green,
+.features-cards .feature-box.red {
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--tint), transparent 82%) 0%, transparent 70%),
+    var(--glass-bg);
+}
+
+.features-cards .feature-box.orange i,
+.features-cards .feature-box.blue i,
+.features-cards .feature-box.green i,
+.features-cards .feature-box.red i {
+  color: var(--tint);
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--tint), transparent 55%));
+}
+
+.features-cards .feature-box h4 { color: var(--heading-color); }
+.features-cards .feature-box p  { color: var(--default-color); }
+
+/* Testimonials */
+.testimonials .testimonial-item .testimonial-img {
+  border-color: var(--glass-highlight);
+}
+
+/* Contact info box: accent-tinted glass instead of a flat block */
+.contact .info-box {
+  background:
+    linear-gradient(150deg, color-mix(in srgb, var(--accent-color), transparent 78%), color-mix(in srgb, var(--accent-2), transparent 85%)),
+    var(--glass-bg);
+  color: var(--default-color);
+}
+
+.contact .info-box h3,
+.contact .info-item .content h4 {
+  color: var(--heading-color);
+}
+
+.contact .info-box p {
+  opacity: 1;
+}
+
+.contact .info-item .icon-box {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.contact .info-item .icon-box i {
+  color: var(--accent-color);
+}
+
+.contact .contact-form .form-control,
+.contact .contact-form .form-select {
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--default-color);
+}
+
+.contact .contact-form .form-control:focus {
+  background: var(--input-bg);
+  color: var(--default-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color), transparent 82%);
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--glass-border);
+  background: var(--band-bg);
+}
+
+.footer .footer-about .logo span {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.footer .social-links a {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+.footer .social-links a:hover {
+  box-shadow: var(--glass-glow);
+}
+
+.footer .copyright {
+  border-top-color: var(--glass-border);
+}
+
+/* White-background illustrations get a framed glass card */
+.features .tab-pane img {
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Imagery sits a little softer on the dark backdrop */
+:root[data-theme="dark"] .features-2 .phone-mockup img {
+  filter: drop-shadow(0 20px 50px rgba(124, 58, 237, 0.35));
+}
+
+/*--------------------------------------------------------------
+# Fallbacks & accessibility
+--------------------------------------------------------------*/
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root { --glass-bg: rgba(22, 25, 50, 0.9); }
+  :root[data-theme="light"] { --glass-bg: rgba(255, 252, 248, 0.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+  .features-cards .feature-box:hover,
+  .testimonials .testimonial-item:hover,
+  .services .service-card:hover,
+  .stats .stats-item:hover { transform: none; }
+}
